@@ -1,0 +1,32 @@
+plugins {
+    id "java"
+    id "application"
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    javaMainClass = "com.metlushko.book.BookApiApplication"
+    lombokVersion = '1.18.26'
+}
+
+application {
+    mainClassName = javaMainClass
+}
+
+dependencies {
+
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+    implementation group: 'org.springframework', name: 'spring-context', version: '6.1.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.16.1'
+
+    // https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+
+}
