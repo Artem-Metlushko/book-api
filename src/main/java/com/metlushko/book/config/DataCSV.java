@@ -21,11 +21,7 @@ public class DataCSV {
 
     private final CsvMapper csvMapper;
 
-
     private final File file;
-
-
-
 
     public Map<Long, Book> loadBooks() {
         try {
