@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.metlushko.book.config.JacsonStathamXmlConfig;
 import com.metlushko.book.dao.BookDao;
 import com.metlushko.book.dao.BookDaoCsv;
+import com.metlushko.book.model.Book;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -16,6 +17,9 @@ public class BookApiApplication {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(JacsonStathamXmlConfig.class);
         BookDaoCsv bookDaoCsv = context.getBean(BookDaoCsv.class);
+
+        Book book = new Book(3L, "1", "1", "1");
+        bookDaoCsv.addBook(book);
         System.out.println(bookDaoCsv.getAllBooks());
 
 
