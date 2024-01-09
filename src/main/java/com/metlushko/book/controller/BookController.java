@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 @Component
@@ -43,8 +44,9 @@ public class BookController {
     }
 
     private void displayAllBooks() {
-        List<Book> allBooks = bookService.getAllBooks();
+        List<Map.Entry<Long, Book>> allBooks = bookService.getAllBooks();
         allBooks.forEach(System.out::println);
+
     }
 
 

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -14,7 +15,7 @@ public class BookServiceImpl implements BookService {
     private final BookDaoCsv bookDaoCsv;
 
     @Override
-    public List<Book> getAllBooks() {
+    public List<Map.Entry<Long, Book>> getAllBooks() {
         return bookDaoCsv.getAllBooks();
     }
 
@@ -35,6 +36,11 @@ public class BookServiceImpl implements BookService {
 
     public void deleteBook(Long id) {
         bookDaoCsv.deleteBook(id);
+    }
+    public void addMap(Map<Long,Book> map){
+        bookDaoCsv.addMap(map);
+
+
     }
 
 

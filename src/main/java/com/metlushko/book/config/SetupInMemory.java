@@ -20,8 +20,7 @@ public class SetupInMemory {
 
     @PostConstruct
     private void setupData(){
-//        addBookToMemoryFromCsvFile();
-        mapSout();
+        addBookToMapFromCsvFile();
 
 
     }
@@ -34,9 +33,9 @@ public class SetupInMemory {
         }
     }
 
-    private void mapSout(){
+    private void addBookToMapFromCsvFile(){
         Map<Long, Book> map = setupData.loadObjectMap(Book.class);
-        map.entrySet().forEach(System.out::println);
+        bookService.addMap(map);
     }
 
 

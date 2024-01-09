@@ -5,14 +5,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
-public class BookDaoCsv implements BookDao {
+public class BookDaoCsv {
 
-    private final List<Book> bookList;
+    private final Map<Long,Book> map=new HashMap<>();
     @Value("${random.min}")
     private Long min;
 
@@ -21,34 +23,35 @@ public class BookDaoCsv implements BookDao {
     private final Random random;
 
 
-    @Override
-    public List<Book> getAllBooks() {
-        return bookList;
+
+    public List<Map.Entry<Long, Book>> getAllBooks() {
+        return map.entrySet().stream().toList();
     }
 
-    @Override
-    public Book getBookById(Long id) {
+
+ /*   public Book getBookById(Long id) {
         int parseInt = Integer.parseInt(String.valueOf(id));
         return bookList.get(parseInt);
-    }
+    }*/
 
-    @Override
+
     public void addBook(Book book) {
         long id = random.nextLong((max - min + 1) + min);
         book.setId(id);
-//        bookMap.add(book);
-
+        map.put(book.getId(),book);
     }
 
-    @Override
+
     public void updateBook(Book book) {
 
+    }
 
+    public void deleteBook(Long id) {
 
     }
 
-    @Override
-    public void deleteBook(Long id) {
+    public void addMap(Map<Long, Book> bookMap){
 
+        map.putAll(bookMap);
     }
 }

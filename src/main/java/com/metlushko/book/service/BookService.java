@@ -3,10 +3,11 @@ package com.metlushko.book.service;
 import com.metlushko.book.model.Book;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BookService {
 
-    List<Book> getAllBooks();
+    List<Map.Entry<Long, Book>> getAllBooks();
 
     Book getBookById(Long id);
 

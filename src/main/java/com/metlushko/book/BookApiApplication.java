@@ -10,6 +10,7 @@ public class BookApiApplication {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         BookDaoCsv bookDaoCsv = context.getBean(BookDaoCsv.class);
+        System.out.println(bookDaoCsv.getAllBooks());
 
 //        Book book = new Book( "1", "1", "1");
 //        bookDaoCsv.addBook(book);
