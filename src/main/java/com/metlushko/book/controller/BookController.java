@@ -38,7 +38,7 @@ public class BookController {
 //                case 4 -> deleteBook();
 //                case 0 -> exitApplication();
                 default -> System.out.println("Неверный выбор. Попробуйте снова.");
-            }
+            } throw new RuntimeException();
 
         }
     }

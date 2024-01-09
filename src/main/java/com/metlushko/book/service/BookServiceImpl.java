@@ -25,8 +25,6 @@ public class BookServiceImpl implements BookService {
     }
 
     public void addBook(Book book){
-
-
         bookDaoCsv.addBook(book);
     }
 

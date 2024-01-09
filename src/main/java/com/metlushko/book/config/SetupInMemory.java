@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,15 @@ public class SetupInMemory {
 
     @PostConstruct
     private void setupData(){
-        addBookToMapFromCsvFile();
+
+        HashMap<Long, Book> hashMap = new HashMap<>();
+        hashMap.put(1L,new Book(1L,"2","3","4"));
+        hashMap.put(2L,new Book(2L,"2","3","4"));
+
+
+        writeBooksToCsv(hashMap);
+        readBooksFromCsvFile();
+        System.out.println(bookService.getAllBooks());
 
 
     }
@@ -33,9 +42,13 @@ public class SetupInMemory {
         }
     }
 
-    private void addBookToMapFromCsvFile(){
+    private void readBooksFromCsvFile(){
         Map<Long, Book> map = setupData.loadObjectMap(Book.class);
         bookService.addMap(map);
+    }
+
+    private void writeBooksToCsv(Map<Long,Book> map){
+        setupData.writeAlLObject(map);
     }
 
 
