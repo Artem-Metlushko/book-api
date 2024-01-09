@@ -1,26 +1,22 @@
 package com.metlushko.book;
 
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.metlushko.book.config.JacsonStathamXmlConfig;
-import com.metlushko.book.dao.BookDao;
+import com.metlushko.book.config.AppConfig;
 import com.metlushko.book.dao.BookDaoCsv;
-import com.metlushko.book.model.Book;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.io.File;
-import java.io.IOException;
 
 public class BookApiApplication {
 
     public static void main(String[] args) {
 
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(JacsonStathamXmlConfig.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         BookDaoCsv bookDaoCsv = context.getBean(BookDaoCsv.class);
 
-        Book book = new Book(3L, "1", "1", "1");
-        bookDaoCsv.addBook(book);
-        System.out.println(bookDaoCsv.getAllBooks());
+//        Book book = new Book( "1", "1", "1");
+//        bookDaoCsv.addBook(book);
+//        System.out.println(bookDaoCsv.getAllBooks());
+
+//        BookController bookController = context.getBean(BookController.class);
+//        bookController.main();
 
 
     }

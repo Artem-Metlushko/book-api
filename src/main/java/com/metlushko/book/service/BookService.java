@@ -1,25 +1,18 @@
 package com.metlushko.book.service;
 
-import com.metlushko.book.dao.BookDaoCsv;
 import com.metlushko.book.model.Book;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
-@RequiredArgsConstructor
-public class BookService {
+public interface BookService {
 
-    private final BookDaoCsv bookDaoCsv;
+    List<Book> getAllBooks();
 
-    public List<Book> getBooks(){
-       return bookDaoCsv.getAllBooks();
-    }
+    Book getBookById(Long id);
 
-    public void addBook(Book book){
-        bookDaoCsv.addBook(book);
-    }
+    public void addBook(Book book);
 
+    public void updateBook(Book book) ;
 
+    public void deleteBook(Long id);
 }

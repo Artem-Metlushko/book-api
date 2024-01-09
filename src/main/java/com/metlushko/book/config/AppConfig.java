@@ -10,13 +10,16 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
 
 @Configuration
 @PropertySource("classpath:application.properties")
 @ComponentScan("com.metlushko.book")
-public class JacsonStathamXmlConfig {
+public class AppConfig {
     @Value("${jacson.path}")
     private String fileName;
+
 
     @Bean
     public CsvMapper csvMapper(){
@@ -28,12 +31,20 @@ public class JacsonStathamXmlConfig {
         try {
             return new ClassPathResource(fileName).getFile();
         } catch (IOException e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }throw new RuntimeException();
     }
 
+    @Bean
+    public Scanner scanner(){
+        return new Scanner(System.in);
+    }
 
+    @Bean()
+    public Random random(){
+        return new Random();
 
+    }
 
 
 }

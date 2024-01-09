@@ -1,13 +1,13 @@
 package com.metlushko.book.config;
 
 import com.metlushko.book.model.Book;
-import com.metlushko.book.service.BookService;
+import com.metlushko.book.service.BookServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -15,21 +15,28 @@ public class SetupInMemory {
 
     private final SetupData setupData;
 
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
 
-    private final File file;
 
     @PostConstruct
     private void setupData(){
-        setupBookListInMemory();
+//        addBookToMemoryFromCsvFile();
+        mapSout();
+
 
     }
 
-    private void setupBookListInMemory(){
-        List<Book> books = setupData.loadObjectList(Book.class, file.getAbsolutePath());
+    private void addBookToMemoryFromCsvFile(){
+        List<Book> books = setupData.loadObjectList(Book.class);
+
         for (Book book:books){
             bookService.addBook(book);
         }
+    }
+
+    private void mapSout(){
+        Map<Long, Book> map = setupData.loadObjectMap(Book.class);
+        map.entrySet().forEach(System.out::println);
     }
 
 

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class SetupData {
     private final File file;
 
 
-    public <T> List<T> loadObjectList(final Class<T> type, final String fileName) {
+    public <T> List<T> loadObjectList(final Class<T> type) {
         try {
             final CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
             final MappingIterator<T> readValues = csvMapper.readerFor(type).with(bootstrapSchema).readValues(file);
@@ -27,6 +29,22 @@ public class SetupData {
         } catch (final Exception e) {
             e.printStackTrace();
             return Collections.emptyList();
+        }
+    }
+
+    public <T> Map<Long, T> loadObjectMap(final Class<T> type) {
+        try {
+            final CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
+            final MappingIterator<T> readValues = csvMapper.readerFor(type).with(bootstrapSchema).readValues(file);
+
+            return readValues.readAll().stream()
+                    .filter(Book.class::isInstance)
+                    .map(Book.class::cast)
+                    .collect(Collectors.toMap(Book::getId, obj -> (T) obj));
+
+        } catch (final Exception e) {
+            e.printStackTrace();
+            return Collections.emptyMap();
         }
     }
 

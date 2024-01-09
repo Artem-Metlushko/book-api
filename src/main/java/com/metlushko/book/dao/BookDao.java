@@ -3,9 +3,10 @@ package com.metlushko.book.dao;
 import com.metlushko.book.model.Book;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BookDao {
-    <T> List<T> getAllBooks();
+    <T> List<Map.Entry<String, Book>> getAllBooks();
 
     Book getBookById(Long id);
 
