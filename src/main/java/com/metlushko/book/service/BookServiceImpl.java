@@ -10,21 +10,21 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class BookServiceImpl implements BookService {
+public class BookServiceImpl  {
 
     private final BookDaoCsv bookDaoCsv;
 
-    @Override
+
     public List<Map.Entry<Long, Book>> getAllBooks() {
         return bookDaoCsv.getAllBooks();
     }
 
-    @Override
+
     public Book getBookById(Long id) {
-        return null;
+        return bookDaoCsv.getBookById(id);
     }
 
-    public void addBook(Book book){
+    public void addBook(Book book) {
         bookDaoCsv.addBook(book);
     }
 
@@ -35,11 +35,8 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(Long id) {
         bookDaoCsv.deleteBook(id);
     }
-    public void addMap(Map<Long,Book> map){
+
+    public void addMap(Map<Long, Book> map) {
         bookDaoCsv.addMap(map);
-
-
     }
-
-
 }

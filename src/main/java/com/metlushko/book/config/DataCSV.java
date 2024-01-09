@@ -11,47 +11,35 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class SetupData {
+public class DataCSV {
 
     private final CsvMapper csvMapper;
+
 
     private final File file;
 
 
-    public <T> List<T> loadObjectList(final Class<T> type) {
-        CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
 
-        try {
-            final MappingIterator<T> readValues = csvMapper
-                    .readerFor(type)
-                    .with(bootstrapSchema)
-                    .readValues(file);
-            return readValues.readAll();
-        } catch (final Exception e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
-    }
 
-    public <T> Map<Long, T> loadObjectMap(final Class<T> type) {
+    public Map<Long, Book> loadBooks() {
         try {
             CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
 
-            final MappingIterator<T> readValues = csvMapper
-                    .readerFor(type).
+            final MappingIterator<Book> readValues = csvMapper
+                    .readerFor(Book.class).
                     with(bootstrapSchema)
                     .readValues(file);
 
             return readValues.readAll().stream()
-                    .filter(Book.class::isInstance)
+                    .filter(Objects::nonNull)
                     .map(Book.class::cast)
-                    .collect(Collectors.toMap(Book::getId, obj -> (T) obj));
+                    .collect(Collectors.toMap(Book::getId, obj -> obj));
 
         } catch (final Exception e) {
             e.printStackTrace();
@@ -60,7 +48,7 @@ public class SetupData {
     }
 
 
-    public void writeAlLObject(Map<Long, Book> map) {
+    public void writeBooks(Map<Long, Book> map) {
         CsvSchema schema = csvMapper.schemaFor(Book.class).withHeader();
         try {
             SequenceWriter sequenceWriter = csvMapper

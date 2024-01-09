@@ -1,7 +1,8 @@
 package com.metlushko.book;
 
 import com.metlushko.book.config.AppConfig;
-import com.metlushko.book.dao.BookDaoCsv;
+import com.metlushko.book.config.DataCSV;
+import com.metlushko.book.controller.BookController;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class BookApiApplication {
@@ -9,15 +10,13 @@ public class BookApiApplication {
     public static void main(String[] args) {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        BookDaoCsv bookDaoCsv = context.getBean(BookDaoCsv.class);
-        System.out.println(bookDaoCsv.getAllBooks());
+        DataCSV csv = context.getBean(DataCSV.class);
+        System.out.println(csv);
 
-//        Book book = new Book( "1", "1", "1");
-//        bookDaoCsv.addBook(book);
-//        System.out.println(bookDaoCsv.getAllBooks());
 
-//        BookController bookController = context.getBean(BookController.class);
-//        bookController.main();
+
+        BookController bookController = context.getBean(BookController.class);
+        bookController.main();
 
 
     }

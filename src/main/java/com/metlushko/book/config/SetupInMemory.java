@@ -7,14 +7,13 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class SetupInMemory {
 
-    private final SetupData setupData;
+    private final DataCSV dataCSV;
 
     private final BookServiceImpl bookService;
 
@@ -34,21 +33,21 @@ public class SetupInMemory {
 
     }
 
-    private void addBookToMemoryFromCsvFile(){
-        List<Book> books = setupData.loadObjectList(Book.class);
+/*    private void addBookToMemoryFromCsvFile(){
+        List<Book> books = dataCSV.loadObjectList(Book.class);
 
         for (Book book:books){
             bookService.addBook(book);
         }
-    }
+    }*/
 
     private void readBooksFromCsvFile(){
-        Map<Long, Book> map = setupData.loadObjectMap(Book.class);
+        Map<Long, Book> map = dataCSV.loadBooks();
         bookService.addMap(map);
     }
 
     private void writeBooksToCsv(Map<Long,Book> map){
-        setupData.writeAlLObject(map);
+        dataCSV.writeBooks(map);
     }
 
 

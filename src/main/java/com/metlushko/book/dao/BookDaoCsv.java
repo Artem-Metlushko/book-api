@@ -29,10 +29,9 @@ public class BookDaoCsv {
     }
 
 
- /*   public Book getBookById(Long id) {
-        int parseInt = Integer.parseInt(String.valueOf(id));
-        return bookList.get(parseInt);
-    }*/
+    public Book getBookById(Long id) {
+        return map.get(id);
+    }
 
 
     public void addBook(Book book) {

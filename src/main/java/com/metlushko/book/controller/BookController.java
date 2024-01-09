@@ -1,13 +1,10 @@
 package com.metlushko.book.controller;
 
-
 import com.metlushko.book.model.Book;
-import com.metlushko.book.service.BookService;
+import com.metlushko.book.service.BookServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 @Component
@@ -16,17 +13,17 @@ public class BookController {
 
     private final Scanner scanner;
 
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
 
     public void main() {
 
         while (true) {
-            System.out.println("Выберите опцию:");
-            System.out.println("1. Вывести список книг");
-            System.out.println("2. Создать новую книгу");
-            System.out.println("3. Отредактировать книгу");
-            System.out.println("4. Удалить книгу");
-            System.out.println("0. Выйти");
+            System.out.println("Choose an option:");
+            System.out.println("1. Display the list of books");
+            System.out.println("2. Create a new book");
+            System.out.println("3. Edit a book");
+            System.out.println("4. Delete a book");
+            System.out.println("0. Exit");
 
             int nextInt = scanner.nextInt();
             scanner.nextLine();
@@ -35,30 +32,28 @@ public class BookController {
                 case 1 -> displayAllBooks();
                 case 2 -> createNewBook();
                 case 3 -> editBook();
-//                case 4 -> deleteBook();
-//                case 0 -> exitApplication();
-                default -> System.out.println("Неверный выбор. Попробуйте снова.");
-            } throw new RuntimeException();
+                case 4 -> deleteBook();
+                case 0 -> System.exit(0);
+                default -> System.out.println("Invalid choice. Please try again.");
+            }
 
         }
     }
 
     private void displayAllBooks() {
-        List<Map.Entry<Long, Book>> allBooks = bookService.getAllBooks();
-        allBooks.forEach(System.out::println);
+        bookService.getAllBooks().forEach(System.out::println);
 
     }
 
-
     private void createNewBook() {
 
-        System.out.println("Введите название книги:");
+        System.out.println("Enter the book title:");
         String name = scanner.nextLine();
 
-        System.out.println("Введите автора книги:");
+        System.out.println("Enter the book author:");
         String author = scanner.nextLine();
 
-        System.out.println("Введите краткое описание книги:");
+        System.out.println("Enter a brief description of the book:");
         String description = scanner.nextLine();
 
         Book newBook = new Book();
@@ -66,35 +61,34 @@ public class BookController {
         newBook.setAuthor(author);
         newBook.setDescription(description);
 
-
         bookService.addBook(newBook);
 
-        System.out.println("Новая книга успешно добавлена.");
+        System.out.println("New book successfully added.");
     }
 
     private void editBook() {
 
-        System.out.println("Введите ID книги для редактирования:");
+        System.out.println("Enter the ID of the book to edit:");
         Long bookId = scanner.nextLong();
         scanner.nextLine();
 
         Book existingBook = bookService.getBookById(bookId);
 
         if (existingBook == null) {
-            System.out.println("Книга с указанным ID не найдена.");
+            System.out.println("Book with the specified ID not found.");
             return;
         }
 
-        System.out.println("Текущая информация о книге:");
+        System.out.println("Current information about the book:");
         System.out.println(existingBook);
 
-        System.out.println("Введите новое название книги:");
+        System.out.println("Enter the new title of the book:");
         String name = scanner.nextLine();
 
-        System.out.println("Введите нового автора книги:");
+        System.out.println("Enter the new author of the book:");
         String newAuthor = scanner.nextLine();
 
-        System.out.println("Введите новое краткое описание книги:");
+        System.out.println("Enter the new brief description of the book:");
         String newDescription = scanner.nextLine();
 
         existingBook.setName(name);
@@ -103,9 +97,33 @@ public class BookController {
 
         bookService.updateBook(existingBook);
 
-        System.out.println("Информация о книге успешно обновлена.");
+        System.out.println("Information about the book successfully updated.");
     }
 
+    private void deleteBook() {
 
+        System.out.println("Enter the ID of the book to delete:");
+        Long bookId = scanner.nextLong();
+        scanner.nextLine();
 
+        Book existingBook = bookService.getBookById(bookId);
+
+        if (existingBook == null) {
+            System.out.println("Book with the specified ID not found.");
+            return;
+        }
+
+        System.out.println("Are you sure you want to delete the following book?");
+        System.out.println(existingBook);
+        System.out.println("Enter 'yes' to confirm:");
+
+        String confirmation = scanner.nextLine().trim().toLowerCase();
+
+        if ("yes".equals(confirmation)) {
+            bookService.deleteBook(bookId);
+            System.out.println("Book successfully deleted.");
+        } else {
+            System.out.println("Deletion canceled.");
+        }
+    }
 }
