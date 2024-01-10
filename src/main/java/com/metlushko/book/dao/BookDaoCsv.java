@@ -14,7 +14,6 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class BookDaoCsv {
 
-    private final Map<Long,Book> map;
     private final DataCSV dataCSV;
     @Value("${random.min}")
     private Long min;
@@ -66,7 +65,7 @@ public class BookDaoCsv {
         if (bookMap.containsKey(id)) {
             bookMap.remove(id);
 
-            dataCSV.writeBooks(map);
+            dataCSV.writeBooks(bookMap);
         } else {
             throw new IllegalArgumentException("Book with id " + id + " not found.");
         }
@@ -75,6 +74,6 @@ public class BookDaoCsv {
 
     public void addMap(Map<Long, Book> bookMap){
 
-        map.putAll(bookMap);
+        dataCSV.writeBooks(bookMap);
     }
 }

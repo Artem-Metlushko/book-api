@@ -46,14 +46,13 @@ public class DataCSV {
 
     public void writeBooks(Map<Long, Book> map) {
         CsvSchema schema = csvMapper.schemaFor(Book.class).withHeader();
-        try {
-            SequenceWriter sequenceWriter = csvMapper
-                    .writer(schema)
-                    .writeValues(file)
-                    .writeAll(map.values());
-            sequenceWriter.flush();
+        try (SequenceWriter sequenceWriter = csvMapper
+                .writer(schema)
+                .writeValues(file)
+                .writeAll(map.values());
+        ) {
 
-            sequenceWriter.close();
+            sequenceWriter.flush();
 
         } catch (IOException e) {
             throw new RuntimeException("Error writing CSV file", e);
