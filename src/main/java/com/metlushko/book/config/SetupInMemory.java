@@ -29,7 +29,6 @@ public class SetupInMemory {
 
         dataCSV.writeBooks(hashMap);
 
-        bookService.getAllBooks().forEach(System.out::println);
 
     }
 
