@@ -1,36 +1,38 @@
 package com.metlushko.book.config;
 
 import com.metlushko.book.model.Book;
-import com.metlushko.book.service.BookService;
+import com.metlushko.book.service.BookServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class SetupInMemory {
 
-    private final SetupData setupData;
+    private final DataCSV dataCSV;
 
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
 
-    private final File file;
+    private final  Map<Long, Book> hashMap;
+
 
     @PostConstruct
     private void setupData(){
-        setupBookListInMemory();
+
+        hashMap.put(1L,new Book(1L,"1","a","b"));
+        hashMap.put(2L,new Book(2L,"2","c","d"));
+        hashMap.put(3L,new Book(3L,"3","f","c"));
+        hashMap.put(4L,new Book(4L,"4","q","w"));
+
+        dataCSV.writeBooks(hashMap);
+
+        bookService.getAllBooks().forEach(System.out::println);
 
     }
 
-    private void setupBookListInMemory(){
-        List<Book> books = setupData.loadObjectList(Book.class, file.getAbsolutePath());
-        for (Book book:books){
-            bookService.addBook(book);
-        }
-    }
 
 
 

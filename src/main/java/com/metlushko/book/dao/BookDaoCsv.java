@@ -1,41 +1,79 @@
 package com.metlushko.book.dao;
 
+import com.metlushko.book.config.DataCSV;
 import com.metlushko.book.model.Book;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 @Component
 @RequiredArgsConstructor
-public class BookDaoCsv implements BookDao {
+public class BookDaoCsv {
 
-    private final List<Book> bookList;
+    private final DataCSV dataCSV;
+    @Value("${random.min}")
+    private Long min;
+
+    @Value("${random.max}")
+    private Long max;
+    private final Random random;
 
 
-    @Override
-    public  List<Book> getAllBooks() {
-        return bookList;
+
+    public List<Map.Entry<Long, Book>> getAllBooks() {
+        return dataCSV.loadBooks().entrySet().stream().toList();
     }
 
-    @Override
+
     public Book getBookById(Long id) {
-        return null;
+        return dataCSV.loadBooks().get(id);
     }
 
-    @Override
+
     public void addBook(Book book) {
-        bookList.add(book);
+        Map<Long, Book> bookMap = dataCSV.loadBooks();
+
+        long id = random.nextLong((max - min + 1) + min);
+        book.setId(id);
+        bookMap.put(book.getId(),book);
+
+        dataCSV.writeBooks(bookMap);
+
 
     }
 
-    @Override
+
     public void updateBook(Book book) {
+        Map<Long, Book> bookMap = dataCSV.loadBooks();
+
+        if (bookMap.containsKey(book.getId())) {
+            bookMap.put(book.getId(), book);
+
+            dataCSV.writeBooks(bookMap);
+        } else {
+            throw new IllegalArgumentException("Book with id " + book.getId() + " not found.");
+        }
+    }
+
+    public void deleteBook(Long id) {
+        Map<Long, Book> bookMap = dataCSV.loadBooks();
+
+        if (bookMap.containsKey(id)) {
+            bookMap.remove(id);
+
+            dataCSV.writeBooks(bookMap);
+        } else {
+            throw new IllegalArgumentException("Book with id " + id + " not found.");
+        }
 
     }
 
-    @Override
-    public void deleteBook(Long id) {
+    public void addMap(Map<Long, Book> bookMap){
 
+        dataCSV.writeBooks(bookMap);
     }
 }
