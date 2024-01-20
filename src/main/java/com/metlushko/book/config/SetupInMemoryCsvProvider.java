@@ -1,7 +1,7 @@
 package com.metlushko.book.config;
 
+import com.metlushko.book.dao.DataCSV;
 import com.metlushko.book.model.Book;
-import com.metlushko.book.service.BookServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,12 +10,9 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class SetupInMemory {
+public class SetupInMemoryCsvProvider {
 
     private final DataCSV dataCSV;
-
-    private final BookServiceImpl bookService;
-
     private final  Map<Long, Book> hashMap;
 
 
