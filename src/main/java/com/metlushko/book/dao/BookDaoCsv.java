@@ -1,6 +1,6 @@
 package com.metlushko.book.dao;
 
-import com.metlushko.book.model.Book;
+import com.metlushko.book.entyti.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

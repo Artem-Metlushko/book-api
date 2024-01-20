@@ -1,7 +1,7 @@
 package com.metlushko.book.config;
 
 import com.metlushko.book.dao.DataCSV;
-import com.metlushko.book.model.Book;
+import com.metlushko.book.entyti.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

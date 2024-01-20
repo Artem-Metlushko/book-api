@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.metlushko.book.model.Book;
+import com.metlushko.book.entyti.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

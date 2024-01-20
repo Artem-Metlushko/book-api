@@ -1,6 +1,6 @@
 package com.metlushko.book.dao;
 
-import com.metlushko.book.model.Book;
+import com.metlushko.book.entyti.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,7 +37,7 @@ public class BookDaoJdbc {
     }
 
     public void save(Book book) {
-        jdbcTemplate.update(SAVE, book.getId(), book.getName(), book.getAuthor(), book.getDescription());
+        int update = jdbcTemplate.update(SAVE, book.getId(), book.getName(), book.getAuthor(), book.getDescription());
     }
 
     public void update(Long id, Book book) {

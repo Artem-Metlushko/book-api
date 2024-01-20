@@ -1,6 +1,6 @@
 package com.metlushko.book.controller;
 
-import com.metlushko.book.model.Book;
+import com.metlushko.book.entyti.Book;
 import com.metlushko.book.service.BookServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -95,7 +95,7 @@ public class BookController {
         existingBook.setAuthor(newAuthor);
         existingBook.setDescription(newDescription);
 
-        bookService.updateBook(existingBook);
+        bookService.updateBook(bookId,existingBook);
 
         System.out.println("Information about the book successfully updated.");
     }
