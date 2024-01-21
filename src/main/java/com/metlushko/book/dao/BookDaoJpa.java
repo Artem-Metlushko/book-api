@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -60,9 +59,5 @@ public class BookDaoJpa implements Dao{
 
     }
 
-    @Override
-    public void addMap(Map<Long, Book> map) {
-
-    }
 
 }

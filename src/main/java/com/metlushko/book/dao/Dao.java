@@ -17,5 +17,4 @@ public interface Dao {
 
     List<Book> findAll();
 
-    void addMap(Map<Long, Book> map);
 }

@@ -2,19 +2,23 @@ package com.metlushko.book.service;
 
 import com.metlushko.book.dao.Dao;
 import com.metlushko.book.entyti.Book;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 @Transactional
-@RequiredArgsConstructor
 public class BookServiceImpl  {
 
     private final Dao dao;
+
+    @Autowired
+    public BookServiceImpl(@Qualifier("bookDaoJpa") Dao dao) {
+        this.dao = dao;
+    }
 
 
     public List<Book> getAllBooks() {
@@ -38,7 +42,4 @@ public class BookServiceImpl  {
         dao.delete(id);
     }
 
-    public void addMap(Map<Long, Book> map) {
-        dao.addMap(map);
-    }
 }
