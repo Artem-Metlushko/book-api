@@ -13,7 +13,15 @@ public class Book {
 
     private Long id;
     private String name;
+
+    public Book(String name, String author, String description) {
+        this.name = name;
+        this.author = author;
+        this.description = description;
+    }
+
     private String author;
     private String description;
+
 
 }

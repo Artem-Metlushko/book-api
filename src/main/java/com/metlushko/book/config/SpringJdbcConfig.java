@@ -8,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import javax.sql.DataSource;
 
@@ -31,6 +32,10 @@ public class SpringJdbcConfig {
         dataSource.setPassword(env.getRequiredProperty(PASSWORD));
 
         return dataSource;
+    }
+    @Bean
+    public GeneratedKeyHolder generatedKeyHolder(){
+        return new GeneratedKeyHolder();
     }
 
     @Bean
