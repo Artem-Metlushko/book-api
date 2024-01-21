@@ -9,7 +9,8 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class BookServiceImpl  {
+public class BookServiceImpl {
+
 
     private final Dao dao;
 
@@ -27,8 +28,8 @@ public class BookServiceImpl  {
         return dao.save(book);
     }
 
-    public void updateBook(Long id,Book book) {
-        dao.update(id,book);
+    public void updateBook(Long id, Book book) {
+        dao.update(id, book);
     }
 
     public void deleteBook(Long id) {
