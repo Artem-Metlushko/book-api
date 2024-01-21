@@ -17,7 +17,7 @@ import java.util.Optional;
 public class BookDaoJdbc implements Dao {
 
     private final JdbcTemplate jdbcTemplate;
-    private final   KeyHolder keyHolder;
+    private final KeyHolder keyHolder;
     private final BeanPropertyRowMapper<Book> propertyRowMapper;
 
     private static final String FIND_ALL = "SELECT * FROM books";
@@ -66,7 +66,6 @@ public class BookDaoJdbc implements Dao {
     }
 
 
-
     @Override
     public void update(Long id, Book book) {
 
@@ -84,7 +83,7 @@ public class BookDaoJdbc implements Dao {
 
     @Override
     public List<Book> findAll() {
-        return null;
+        return jdbcTemplate.query(FIND_ALL, propertyRowMapper);
     }
 
 

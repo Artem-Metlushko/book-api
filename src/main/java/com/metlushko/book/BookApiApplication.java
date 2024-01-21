@@ -18,7 +18,8 @@ public class BookApiApplication {
         bookDaoJdbc.save(new Book("saveBook","saveBook","saveBook"));
         Book book = new Book("updateBook", "updateBook", "updateBook");
         bookDaoJdbc.update(11L,book );
-        bookDaoJdbc.delete(1L);*/
+        bookDaoJdbc.delete(1L);
+        bookDaoJdbc.findAll().forEach(System.out::println);*/
 
 
     }
