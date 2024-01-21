@@ -23,8 +23,8 @@ public class BookServiceImpl  {
         return dao.findById(id).orElseThrow();
     }
 
-    public void addBook(Book book) {
-        dao.save(book);
+    public Book addBook(Book book) {
+        return dao.save(book);
     }
 
     public void updateBook(Long id,Book book) {
