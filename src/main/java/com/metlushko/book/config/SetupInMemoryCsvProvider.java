@@ -1,5 +1,6 @@
 package com.metlushko.book.config;
 
+import com.metlushko.book.dao.DataCSV;
 import com.metlushko.book.model.Book;
 import com.metlushko.book.service.BookServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class SetupInMemory {
+public class SetupInMemoryCsvProvider {
 
     private final DataCSV dataCSV;
 
@@ -29,11 +30,9 @@ public class SetupInMemory {
 
         dataCSV.writeBooks(hashMap);
 
+        dataCSV.loadBooks();
 
     }
-
-
-
 
 
 }

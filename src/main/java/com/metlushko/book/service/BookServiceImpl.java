@@ -1,42 +1,38 @@
 package com.metlushko.book.service;
 
-import com.metlushko.book.dao.BookDaoCsv;
+import com.metlushko.book.dao.Dao;
 import com.metlushko.book.model.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class BookServiceImpl  {
 
-    private final BookDaoCsv bookDaoCsv;
+    private final Dao dao;
 
 
-    public List<Map.Entry<Long, Book>> getAllBooks() {
-        return bookDaoCsv.getAllBooks();
+    public List<Book> getAllBooks() {
+        return dao.findAll();
     }
 
 
     public Book getBookById(Long id) {
-        return bookDaoCsv.getBookById(id);
+        return dao.findById(id).orElseThrow();
     }
 
-    public void addBook(Book book) {
-        bookDaoCsv.addBook(book);
+    public Book addBook(Book book) {
+        return dao.save(book);
     }
 
-    public void updateBook(Book book) {
-        bookDaoCsv.updateBook(book);
+    public void updateBook(Long id,Book book) {
+        dao.update(id,book);
     }
 
     public void deleteBook(Long id) {
-        bookDaoCsv.deleteBook(id);
+        dao.delete(id);
     }
 
-    public void addMap(Map<Long, Book> map) {
-        bookDaoCsv.addMap(map);
-    }
 }

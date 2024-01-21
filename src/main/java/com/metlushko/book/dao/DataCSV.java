@@ -1,4 +1,4 @@
-package com.metlushko.book.config;
+package com.metlushko.book.dao;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.SequenceWriter;
