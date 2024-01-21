@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -17,17 +19,11 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @Table(name = "books")
 @JsonPropertyOrder({"id", "name", "author", "description"})
-public class Book {
+public class Book implements Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-
-    public Book(String name, String author, String description) {
-        this.name = name;
-        this.author = author;
-        this.description = description;
-    }
 
     private String name;
 

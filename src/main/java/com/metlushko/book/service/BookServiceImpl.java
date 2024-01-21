@@ -1,5 +1,6 @@
 package com.metlushko.book.service;
 
+import com.metlushko.book.dao.CriteriaDao;
 import com.metlushko.book.dao.Dao;
 import com.metlushko.book.entyti.Book;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Component
 @Transactional
-public class BookServiceImpl  {
+public class BookServiceImpl {
 
     private final Dao dao;
 
@@ -25,6 +26,13 @@ public class BookServiceImpl  {
         return dao.findAll();
     }
 
+    public List<Book> getAllBooks(String author, String name) {
+
+        return dao instanceof CriteriaDao criteriadao ?
+                criteriadao.findAll(author, name):
+                dao.findAll();
+    }
+
 
     public Book getBookById(Long id) {
         return dao.findById(id).orElseThrow();
@@ -34,12 +42,13 @@ public class BookServiceImpl  {
         return dao.save(book);
     }
 
-    public void updateBook(Long id,Book book) {
+    public void updateBook(Long id, Book book) {
         dao.update(id, book);
     }
 
     public void deleteBook(Long id) {
         dao.delete(id);
     }
+
 
 }
