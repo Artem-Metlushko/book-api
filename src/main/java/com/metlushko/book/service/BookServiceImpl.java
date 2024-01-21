@@ -15,10 +15,14 @@ import java.util.List;
 public class BookServiceImpl {
 
     private final Dao dao;
+    private final CriteriaDao criteriaDao;
 
     @Autowired
-    public BookServiceImpl(@Qualifier("bookDaoJpa") Dao dao) {
+    public BookServiceImpl(@Qualifier("bookDaoJpa") Dao dao ,
+                          CriteriaDao criteriaDao
+    ) {
         this.dao = dao;
+        this.criteriaDao = criteriaDao;
     }
 
 
@@ -28,9 +32,8 @@ public class BookServiceImpl {
 
     public List<Book> getAllBooks(String author, String name) {
 
-        return dao instanceof CriteriaDao criteriadao ?
-                criteriadao.findAll(author, name):
-                dao.findAll();
+        return criteriaDao.findAll(author, name);
+
     }
 
 

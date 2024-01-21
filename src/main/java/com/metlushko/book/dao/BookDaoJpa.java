@@ -1,6 +1,7 @@
 package com.metlushko.book.dao;
 
 import com.metlushko.book.entyti.Book;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -54,32 +55,31 @@ public class BookDaoJpa implements CriteriaDao {
         Book book = session.get(Book.class, id);
         session.remove(book);
     }
-/*    private String name;
-
-    private String author;
-
-    private String description;*/
 
     public List<Book> findAll(String author, String name) {
         Session session = sessionFactory.getCurrentSession();
 
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<Book> criteriaQuery = criteriaBuilder.createQuery(Book.class);
+        try (EntityManager entityManager = sessionFactory.createEntityManager()
+        ) {
 
-        Root<Book> book = criteriaQuery.from(Book.class);
-        List<Predicate> predicates = new ArrayList<>();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Book> criteriaQuery = criteriaBuilder.createQuery(Book.class);
 
-        if (author != null) {
-            predicates.add(criteriaBuilder.equal(book.get("author"), author));
+            Root<Book> book = criteriaQuery.from(Book.class);
+            List<Predicate> predicates = new ArrayList<>();
 
+            if (author != null) {
+                predicates.add(criteriaBuilder.equal(book.get("author"), author));
+            }
+
+            if (name != null) {
+                predicates.add(criteriaBuilder.equal(book.get("name"), name));
+            }
+
+            criteriaQuery.where(predicates.toArray(new Predicate[0]));
+
+            return entityManager.createQuery(criteriaQuery).getResultList();
         }
-
-        if (name != null) {
-            predicates.add(criteriaBuilder.equal(book.get("name"),name));
-        }
-        criteriaQuery.where(predicates.toArray(new Predicate[0]));
-
-        return sessionFactory.createEntityManager().createQuery(criteriaQuery).getResultList();
 
     }
 

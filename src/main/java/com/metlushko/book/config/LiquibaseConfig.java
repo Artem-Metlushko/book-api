@@ -22,6 +22,7 @@ public class LiquibaseConfig {
 
         liquibase.setChangeLog(env.getRequiredProperty(PATH));
         liquibase.setDataSource(dataSource);
+        
 
         return liquibase;
     }
