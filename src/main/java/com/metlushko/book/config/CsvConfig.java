@@ -16,7 +16,7 @@ import java.util.Scanner;
 @Configuration
 @PropertySource("classpath:application.properties")
 @ComponentScan("com.metlushko.book")
-public class AppConfig {
+public class CsvConfig {
     @Value("${jacson.path}")
     private String fileName;
 

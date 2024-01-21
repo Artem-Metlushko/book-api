@@ -95,7 +95,7 @@ public class BookController {
         existingBook.setAuthor(newAuthor);
         existingBook.setDescription(newDescription);
 
-        bookService.updateBook(existingBook);
+        bookService.updateBook(bookId,existingBook);
 
         System.out.println("Information about the book successfully updated.");
     }

@@ -1,6 +1,5 @@
 package com.metlushko.book.dao;
 
-import com.metlushko.book.config.DataCSV;
 import com.metlushko.book.model.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,11 +7,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class BookDaoCsv {
+public class BookDaoCsv implements Dao {
 
     private final DataCSV dataCSV;
     @Value("${random.min}")
@@ -22,32 +23,35 @@ public class BookDaoCsv {
     private Long max;
     private final Random random;
 
-
-
-    public List<Map.Entry<Long, Book>> getAllBooks() {
-        return dataCSV.loadBooks().entrySet().stream().toList();
+    @Override
+    public List<Book> findAll() {
+        return dataCSV.loadBooks().values().stream()
+                .collect(Collectors.toList());
     }
 
 
-    public Book getBookById(Long id) {
-        return dataCSV.loadBooks().get(id);
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        return Optional.ofNullable(dataCSV.loadBooks().get(id));
     }
 
-
-    public void addBook(Book book) {
+    @Override
+    public Book save(Book book) {
         Map<Long, Book> bookMap = dataCSV.loadBooks();
 
         long id = random.nextLong((max - min + 1) + min);
         book.setId(id);
-        bookMap.put(book.getId(),book);
+        bookMap.put(book.getId(), book);
 
         dataCSV.writeBooks(bookMap);
-
+        return dataCSV.loadBooks().get(id);
 
     }
 
 
-    public void updateBook(Book book) {
+    @Override
+    public void update(Long id, Book book) {
         Map<Long, Book> bookMap = dataCSV.loadBooks();
 
         if (bookMap.containsKey(book.getId())) {
@@ -59,7 +63,8 @@ public class BookDaoCsv {
         }
     }
 
-    public void deleteBook(Long id) {
+    @Override
+    public void delete(Long id) {
         Map<Long, Book> bookMap = dataCSV.loadBooks();
 
         if (bookMap.containsKey(id)) {
@@ -72,8 +77,5 @@ public class BookDaoCsv {
 
     }
 
-    public void addMap(Map<Long, Book> bookMap){
 
-        dataCSV.writeBooks(bookMap);
-    }
 }
