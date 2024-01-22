@@ -24,6 +24,11 @@ public class HibernateConfig {
 
     private final DataSource dataSource;
 
+    private static final String DIALECT = "hibernate.dialect";
+    private static final String SHOW_SQL = "hibernate.show_sql";
+    private static final String SECOND_LEVEL_CACHE = "hibernate.cache.use_second_level_cache";
+    private static final String REGION_FACTORY_CLASS = "hibernate.cache.region.factory_class";
+
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
 
@@ -40,14 +45,17 @@ public class HibernateConfig {
     private Properties hibernateProperties() {
         Properties properties = new Properties();
 
-        properties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
+        properties.put(DIALECT, env.getRequiredProperty(DIALECT));
+        properties.put(SHOW_SQL, env.getRequiredProperty(SHOW_SQL));
+        properties.put(REGION_FACTORY_CLASS, env.getRequiredProperty(REGION_FACTORY_CLASS));
+        properties.put(SECOND_LEVEL_CACHE, env.getRequiredProperty(SECOND_LEVEL_CACHE));
+
 
         return properties;
     }
 
     @Bean
-    public HibernateTransactionManager hibernateTransactionManager(){
+    public HibernateTransactionManager hibernateTransactionManager() {
 
         HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
         hibernateTransactionManager.setSessionFactory(sessionFactory().getObject());

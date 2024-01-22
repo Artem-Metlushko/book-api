@@ -8,6 +8,8 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;
 
@@ -15,9 +17,11 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Data
 @Entity
+//@Cacheable
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "books")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @JsonPropertyOrder({"id", "name", "author", "description"})
 public class Book implements Serializable {
 

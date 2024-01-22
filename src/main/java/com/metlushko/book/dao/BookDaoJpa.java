@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class BookDaoJpa implements CriteriaDao {
 
     private final SessionFactory sessionFactory;
 
+    @Cacheable(value="bookCache", key="#id")
     public Optional<Book> findById(Long id) {
         Session session = sessionFactory.getCurrentSession();
 
