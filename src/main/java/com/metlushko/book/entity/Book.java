@@ -1,4 +1,4 @@
-package com.metlushko.book.entyti;
+package com.metlushko.book.entity;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.Entity;

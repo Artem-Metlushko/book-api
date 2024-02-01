@@ -1,6 +1,6 @@
 package com.metlushko.book.controller;
 
-import com.metlushko.book.entyti.Book;
+import com.metlushko.book.entity.Book;
 import com.metlushko.book.service.BookServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

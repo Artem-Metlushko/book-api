@@ -1,6 +1,6 @@
 package com.metlushko.book.dao;
 
-import com.metlushko.book.entyti.Book;
+import com.metlushko.book.entity.Book;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

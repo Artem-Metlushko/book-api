@@ -1,6 +1,6 @@
 package com.metlushko.book.dao;
 
-import com.metlushko.book.entyti.Book;
+import com.metlushko.book.entity.Book;
 
 import java.util.List;
 

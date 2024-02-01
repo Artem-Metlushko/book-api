@@ -2,7 +2,7 @@ package com.metlushko.book.service;
 
 import com.metlushko.book.dao.CriteriaDao;
 import com.metlushko.book.dao.Dao;
-import com.metlushko.book.entyti.Book;
+import com.metlushko.book.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
