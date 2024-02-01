@@ -1,7 +1,6 @@
 package com.metlushko.book.dao;
 
-
-import com.metlushko.book.model.Book;
+import com.metlushko.book.entity.Book;
 
 import java.util.List;
 import java.util.Optional;

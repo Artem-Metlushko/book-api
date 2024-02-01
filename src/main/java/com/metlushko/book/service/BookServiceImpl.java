@@ -1,22 +1,39 @@
 package com.metlushko.book.service;
 
+import com.metlushko.book.dao.CriteriaDao;
 import com.metlushko.book.dao.Dao;
-import com.metlushko.book.model.Book;
-import lombok.RequiredArgsConstructor;
+import com.metlushko.book.entity.Book;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
+@Transactional
 public class BookServiceImpl {
 
-
     private final Dao dao;
+    private final CriteriaDao criteriaDao;
+
+    @Autowired
+    public BookServiceImpl(@Qualifier("bookDaoJpa") Dao dao ,
+                          CriteriaDao criteriaDao
+    ) {
+        this.dao = dao;
+        this.criteriaDao = criteriaDao;
+    }
 
 
     public List<Book> getAllBooks() {
         return dao.findAll();
+    }
+
+    public List<Book> getAllBooks(String author, String name) {
+
+        return criteriaDao.findAll(author, name);
+
     }
 
 
@@ -35,5 +52,6 @@ public class BookServiceImpl {
     public void deleteBook(Long id) {
         dao.delete(id);
     }
+
 
 }
