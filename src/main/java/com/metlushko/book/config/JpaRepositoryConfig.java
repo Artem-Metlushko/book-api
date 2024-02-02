@@ -3,21 +3,24 @@ package com.metlushko.book.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
-//@Configuration
+@Configuration
 @RequiredArgsConstructor
-@EnableTransactionManagement
-@PropertySource("classpath:application.properties")
+@EnableTransactionManagement@PropertySource("classpath:application.properties")
 @ComponentScan(basePackages = "com.metlushko.book")
-public class HibernateConfig {
+@EnableJpaRepositories(basePackages = "com.metlushko.book")
+public class JpaRepositoryConfig {
 
     private final Environment env;
 
@@ -29,20 +32,19 @@ public class HibernateConfig {
     private static final String REGION_FACTORY_CLASS = "hibernate.cache.region.factory_class";
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
-        LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
+        LocalContainerEntityManagerFactoryBean em
+                = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource);
+        em.setPackagesToScan("com.metlushko.book");
 
-        localSessionFactoryBean.setPackagesToScan("com.metlushko.book");
-        localSessionFactoryBean.setHibernateProperties(hibernateProperties());
-        localSessionFactoryBean.setDataSource(dataSource);
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        em.setJpaVendorAdapter(vendorAdapter);
+        em.setJpaProperties(hibernateProperties());
 
-        return localSessionFactoryBean;
-
+        return em;
     }
-
-
-
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
@@ -56,14 +58,6 @@ public class HibernateConfig {
         return properties;
     }
 
-    @Bean
-    public HibernateTransactionManager hibernateTransactionManager() {
 
-        HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
-        hibernateTransactionManager.setSessionFactory(sessionFactory().getObject());
-
-        return hibernateTransactionManager;
-
-    }
 
 }

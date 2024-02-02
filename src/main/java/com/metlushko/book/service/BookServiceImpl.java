@@ -5,12 +5,12 @@ import com.metlushko.book.dao.Dao;
 import com.metlushko.book.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
+@Service
 @Transactional
 public class BookServiceImpl {
 
