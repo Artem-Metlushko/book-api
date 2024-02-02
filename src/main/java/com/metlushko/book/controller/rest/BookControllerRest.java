@@ -1,5 +1,6 @@
 package com.metlushko.book.controller.rest;
 
+import com.metlushko.book.dto.BookRequestDto;
 import com.metlushko.book.dto.BookResponseDto;
 import com.metlushko.book.entity.Book;
 import com.metlushko.book.service.rest.BookServiceRest;
@@ -36,8 +37,8 @@ public class BookControllerRest {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Book addBook(@RequestBody Book book) {
-        return bookService.addBook(book);
+    public BookResponseDto addBook(@RequestBody BookRequestDto bookResponseDto) {
+         return bookService.addBook(bookResponseDto);
     }
 
 /*

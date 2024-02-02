@@ -1,5 +1,6 @@
 package com.metlushko.book.service.rest;
 
+import com.metlushko.book.dto.BookRequestDto;
 import com.metlushko.book.dto.BookResponseDto;
 import com.metlushko.book.entity.Book;
 import com.metlushko.book.repository.BookRepository;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -39,8 +41,13 @@ public class BookServiceRest {
         return bookRepository.findById(id).orElseThrow();
     }
 
-    public Book addBook(Book book) {
-        return bookRepository.save(book);
+    public BookResponseDto addBook(BookRequestDto bookRequestDto) {
+
+        Optional<Book> book1 = Optional.of(bookRequestDto)
+                .map(book -> new Book(null, bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description()))
+                .map(bookRepository::save);
+        return book1.map(bookResponceDto -> new BookResponseDto(bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description())).orElseThrow();
+
     }
 
 /*    public void updateBook(Long id, BookRequestDto bookRequestDto) {
