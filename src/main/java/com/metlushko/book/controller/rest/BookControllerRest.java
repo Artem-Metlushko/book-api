@@ -19,15 +19,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(
-        path = "/api/v1/books",
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
+        path = "/api/v1/books")
 public class BookControllerRest {
 
     private final BookServiceRest bookService;
 
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable Long id) {
+    public Book getBookById(@PathVariable("id")  Long id) {
         return bookService.getBookById(id);
     }
 
@@ -36,7 +34,7 @@ public class BookControllerRest {
         return bookService.getAllBooks();
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Book addBook(@RequestBody Book book) {
         return bookService.addBook(book);
