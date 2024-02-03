@@ -4,6 +4,7 @@ import com.metlushko.book.dto.BookRequestDto;
 import com.metlushko.book.dto.BookResponseDto;
 import com.metlushko.book.entity.Book;
 import com.metlushko.book.service.rest.BookServiceRest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,13 +40,13 @@ public class BookControllerRest {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public BookResponseDto addBook(@RequestBody BookRequestDto bookResponseDto) {
+    public BookResponseDto addBook(@Valid @RequestBody BookRequestDto bookResponseDto) {
          return bookService.addBook(bookResponseDto);
     }
 
     @PutMapping("{id}")
     public BookResponseDto update(@PathVariable("id") Long id,
-                                  @RequestBody BookRequestDto bookRequestDto) {
+                                  @Valid @RequestBody BookRequestDto bookRequestDto) {
         return bookService.updateBook(id, bookRequestDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
