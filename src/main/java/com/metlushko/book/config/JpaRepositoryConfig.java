@@ -17,7 +17,8 @@ import java.util.Properties;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableTransactionManagement@PropertySource("classpath:application.properties")
+@EnableTransactionManagement
+@PropertySource("classpath:application.properties")
 @ComponentScan(basePackages = "com.metlushko.book")
 @EnableJpaRepositories(basePackages = "com.metlushko.book")
 public class JpaRepositoryConfig {

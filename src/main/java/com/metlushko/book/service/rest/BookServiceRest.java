@@ -5,6 +5,8 @@ import com.metlushko.book.dto.BookResponseDto;
 import com.metlushko.book.entity.Book;
 import com.metlushko.book.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,17 +23,9 @@ public class BookServiceRest {
 
     public List<BookResponseDto> getAllBooks() {
 
-        return bookRepository.findAll().stream()
+        return bookRepository.findAll(PageRequest.of(1,2, Sort.by("id"))).stream()
                 .map(book -> new BookResponseDto(book.getName(), book.getAuthor(), book.getDescription()))
                 .toList();
-    }
-
-    public List<BookResponseDto> getAllBooks(String author, String name) {
-
-        return bookRepository.findAll().stream()
-                .map(book -> new BookResponseDto(book.getName(), book.getAuthor(), book.getDescription()))
-                .toList();
-
     }
 
 
