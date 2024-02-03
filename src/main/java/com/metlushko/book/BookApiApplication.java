@@ -1,7 +1,5 @@
 package com.metlushko.book;
 
-import com.metlushko.book.controller.rest.BookControllerRest;
-import com.metlushko.book.entity.Book;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -36,9 +34,9 @@ public class BookApiApplication {
         bookService.getAllBooks().forEach(System.out::println);
         bookService.getAllBooks("saveBook","saveBook").forEach(System.out::println);*/
 
-        BookControllerRest bookControllerRest = context.getBean(BookControllerRest.class);
+        /*BookControllerRest bookControllerRest = context.getBean(BookControllerRest.class);
         Book bookById = bookControllerRest.getBookById(11L);
-        System.out.println(bookById);
+        System.out.println(bookById);*/
 
 
 

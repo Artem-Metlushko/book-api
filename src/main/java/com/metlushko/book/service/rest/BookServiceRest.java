@@ -4,35 +4,33 @@ import com.metlushko.book.dto.BookRequestDto;
 import com.metlushko.book.dto.BookResponseDto;
 import com.metlushko.book.entity.Book;
 import com.metlushko.book.repository.BookRepository;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-@Component
-@Transactional
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BookServiceRest {
 
     private final BookRepository bookRepository;
 
-    public BookServiceRest(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
 
     public List<BookResponseDto> getAllBooks() {
 
         return bookRepository.findAll().stream()
                 .map(book -> new BookResponseDto(book.getName(), book.getAuthor(), book.getDescription()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<BookResponseDto> getAllBooks(String author, String name) {
 
         return bookRepository.findAll().stream()
                 .map(book -> new BookResponseDto(book.getName(), book.getAuthor(), book.getDescription()))
-                .collect(Collectors.toList());
+                .toList();
 
     }
 
@@ -40,25 +38,34 @@ public class BookServiceRest {
     public Book getBookById(Long id) {
         return bookRepository.findById(id).orElseThrow();
     }
-
+    @Transactional
     public BookResponseDto addBook(BookRequestDto bookRequestDto) {
 
-        Optional<Book> book1 = Optional.of(bookRequestDto)
+        return Optional.of(bookRequestDto)
                 .map(book -> new Book(null, bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description()))
-                .map(bookRepository::save);
-        return book1.map(bookResponceDto -> new BookResponseDto(bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description())).orElseThrow();
+                .map(bookRepository::save)
+                .map(bookResponceDto -> new BookResponseDto(bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description()))
+                .orElseThrow();
 
     }
+    @Transactional
+    public Optional<BookResponseDto> updateBook(Long id, BookRequestDto bookRequestDto) {
 
-/*    public void updateBook(Long id, BookRequestDto bookRequestDto) {
-        Optional<Book> byId = bookRepository.findById(id);
-        byId.map(book -> new BookResponseDto())
-
+        return bookRepository.findById(id)
+                .map(book -> new Book(null, bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description()))
+                .map(bookRepository::saveAndFlush)
+                .map(bookResponceDto -> new BookResponseDto(bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description()));
     }
 
-    public void deleteBook(Long id) {
-        dao.delete(id);
-    }*/
+    @Transactional
+    public boolean deleteBook(Long id) {
+        return bookRepository.findById(id)
+                .map( book -> {
+                    bookRepository.delete(book);
+                    bookRepository.flush();
+                    return true;
+                }).orElse(false);
+    }
 
 
 }
