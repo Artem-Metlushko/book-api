@@ -8,3 +8,10 @@ services:
       POSTGRES_PASSWORD: "1234"
     ports:
       - "25555:5432"
+  my-mongodb:
+    image: mongo:6-jammy
+    container_name: my-mongodb
+    ports:
+      - 27018:27017
+
+

@@ -3,6 +3,7 @@ package com.metlushko.book.service.rest;
 import com.metlushko.book.dto.BookRequestDto;
 import com.metlushko.book.dto.BookResponseDto;
 import com.metlushko.book.entity.Book;
+import com.metlushko.book.mapper.BookMapper;
 import com.metlushko.book.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -20,10 +21,12 @@ public class BookServiceRest {
 
     private final BookRepository bookRepository;
 
+    private final BookMapper bookMapper;
+
 
     public List<BookResponseDto> getAllBooks() {
 
-        return bookRepository.findAll(PageRequest.of(1,2, Sort.by("id"))).stream()
+        return bookRepository.findAll(PageRequest.of(1, 2, Sort.by("id"))).stream()
                 .map(book -> new BookResponseDto(book.getName(), book.getAuthor(), book.getDescription()))
                 .toList();
     }
@@ -32,29 +35,32 @@ public class BookServiceRest {
     public Book getBookById(Long id) {
         return bookRepository.findById(id).orElseThrow();
     }
+
     @Transactional
     public BookResponseDto addBook(BookRequestDto bookRequestDto) {
 
         return Optional.of(bookRequestDto)
-                .map(book -> new Book(null, bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description()))
+                .map(bookMapper::toBook)
                 .map(bookRepository::save)
-                .map(bookResponceDto -> new BookResponseDto(bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description()))
+                .map(bookMapper::toBookResponseDto)
                 .orElseThrow();
 
     }
+
     @Transactional
     public Optional<BookResponseDto> updateBook(Long id, BookRequestDto bookRequestDto) {
 
         return bookRepository.findById(id)
-                .map(book -> new Book(null, bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description()))
+                .map(book -> bookMapper.toCopyBook(book, bookRequestDto))
                 .map(bookRepository::saveAndFlush)
-                .map(bookResponceDto -> new BookResponseDto(bookRequestDto.name(), bookRequestDto.author(), bookRequestDto.description()));
+                .map(bookMapper::toBookResponseDto);
+
     }
 
     @Transactional
     public boolean deleteBook(Long id) {
         return bookRepository.findById(id)
-                .map( book -> {
+                .map(book -> {
                     bookRepository.delete(book);
                     bookRepository.flush();
                     return true;
