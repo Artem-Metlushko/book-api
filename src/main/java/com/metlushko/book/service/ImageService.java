@@ -1,9 +1,14 @@
 package com.metlushko.book.service;
 
+import com.metlushko.book.entity.Image;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.client.gridfs.model.GridFSFile;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
@@ -24,6 +29,20 @@ public class ImageService {
         ObjectId id = gridFsTemplate.store(
                 file.getInputStream(), file.getName(), file.getContentType(), metaData);
         return id.toString();
+    }
+
+    public Image download(String id) throws IOException {
+        GridFSFile image = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
+
+        Image loadImage = new Image();
+
+        if (image != null && image.getMetadata() !=null){
+            loadImage.setName(image.getFilename());
+            loadImage.setFileType( image.getMetadata().get("_contentType").toString() );
+            loadImage.setFile( IOUtils.toByteArray(operations.getResource(image).getInputStream()) );
+        }
+
+        return loadImage;
     }
 
 

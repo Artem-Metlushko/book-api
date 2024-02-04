@@ -40,6 +40,7 @@ dependencies {
     implementation 'org.hibernate:hibernate-jcache:6.2.7.Final'
 
     implementation 'org.ehcache:ehcache:3.10.8'
+    implementation 'commons-io:commons-io:2.8.0'
 
 
 
