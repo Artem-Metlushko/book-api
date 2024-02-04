@@ -5,11 +5,14 @@ import com.metlushko.book.dto.BookResponseDto;
 import com.metlushko.book.entity.Book;
 import com.metlushko.book.mapper.BookMapper;
 import com.metlushko.book.repository.BookRepository;
+import com.metlushko.book.service.ImageService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,11 +26,14 @@ public class BookServiceRest {
 
     private final BookMapper bookMapper;
 
+    private final ImageService imageService;
+
 
     public List<BookResponseDto> getAllBooks() {
 
-        return bookRepository.findAll(PageRequest.of(1, 2, Sort.by("id"))).stream()
-                .map(book -> new BookResponseDto(book.getName(), book.getAuthor(), book.getDescription()))
+        return bookRepository.findAll(PageRequest.of(1, 2, Sort.by("id")))
+                .stream()
+                .map(bookMapper::toBookResponseDto)
                 .toList();
     }
 
@@ -36,11 +42,37 @@ public class BookServiceRest {
         return bookRepository.findById(id).orElseThrow();
     }
 
+
+    @Transactional
+    public Optional<String> saveImage(MultipartFile file) {
+        String id = addImage(file);
+        Book book = Book.builder()
+                .name("name")
+                .description("description")
+                .author("author")
+                .imageId(id).build();
+        bookRepository.save(book);
+
+        return Optional.of(id);
+
+    }
+
+    @SneakyThrows
+    private String addImage(MultipartFile file)  {
+        String id = null;
+        if (!file.isEmpty()) {
+            id = imageService.addImage(file);
+        }
+        return id;
+    }
+
     @Transactional
     public BookResponseDto addBook(BookRequestDto bookRequestDto) {
+        MultipartFile imageFile = bookRequestDto.imageFile();
+        String imageId = addImage(imageFile);
 
         return Optional.of(bookRequestDto)
-                .map(bookMapper::toBook)
+                .map(book -> bookMapper.toBook(bookRequestDto, imageId))
                 .map(bookRepository::save)
                 .map(bookMapper::toBookResponseDto)
                 .orElseThrow();

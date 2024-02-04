@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -35,7 +34,7 @@ public class BookControllerRest {
     private final ImageService imageService;
 
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable("id")  Long id) {
+    public Book getBookById(@PathVariable("id") Long id) {
         return bookService.getBookById(id);
     }
 
@@ -60,14 +59,15 @@ public class BookControllerRest {
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id) {
-        if(!bookService.deleteBook(id)){
+        if (!bookService.deleteBook(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addImage(@RequestParam("image") MultipartFile image) throws IOException {
-        return new ResponseEntity<>(imageService.addImage(image),HttpStatus.OK);
+    public ResponseEntity<?> addImage(@RequestParam("image") MultipartFile image) {
+
+        return new ResponseEntity<>(bookService.saveImage(image), HttpStatus.OK);
     }
 
 
