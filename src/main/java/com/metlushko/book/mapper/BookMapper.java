@@ -22,19 +22,6 @@ public class BookMapper {
         return new BookResponseDto(book.getName(), book.getAuthor(), book.getDescription());
     }
 
-/*    public BookRequestDto toBookRequestDto(Book book) {
-
-        return new BookRequestDto(book.getName(), book.getAuthor(), book.getDescription(),book.getImageId());
-    }*/
-
-    /*public Book toCopyBook(Book book) {
-        return Book.builder()
-                .author(book.getAuthor())
-                .name(book.getName())
-                .description(book.getDescription())
-                .build();
-    }*/
-
     public Book toCopyBook(Book book, BookRequestDto bookRequestDto) {
         return Book.builder()
                 .id(book.getId())

@@ -58,7 +58,7 @@ public class BookServiceRest {
     }
 
     @SneakyThrows
-    private String addImage(MultipartFile file)  {
+    private String addImage(MultipartFile file) {
         String id = null;
         if (!file.isEmpty()) {
             id = imageService.addImage(file);
@@ -67,16 +67,29 @@ public class BookServiceRest {
     }
 
     @Transactional
-    public BookResponseDto addBook(BookRequestDto bookRequestDto) {
-        MultipartFile imageFile = bookRequestDto.imageFile();
-        String imageId = addImage(imageFile);
+    public BookResponseDto addBook(BookRequestDto bookRequestDto, MultipartFile imageFile) {
 
+        String imageId = null;
+        if (imageFile != null) {
+            imageId = addImage(imageFile);
+        }
+
+
+        String finalImageId = imageId;
         return Optional.of(bookRequestDto)
-                .map(book -> bookMapper.toBook(bookRequestDto, imageId))
+                .map(book -> bookMapper.toBook(bookRequestDto, finalImageId))
                 .map(bookRepository::save)
                 .map(bookMapper::toBookResponseDto)
                 .orElseThrow();
+    }
+    @Transactional
+    public BookResponseDto addBook(BookRequestDto bookRequestDto) {
 
+        return Optional.of(bookRequestDto)
+                .map(book -> bookMapper.toBook(bookRequestDto, null))
+                .map(bookRepository::save)
+                .map(bookMapper::toBookResponseDto)
+                .orElseThrow();
     }
 
     @Transactional
