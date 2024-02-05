@@ -75,12 +75,6 @@ public class BookControllerRest {
         }
     }
 
-/*    @PostMapping("/add")
-    public ResponseEntity<?> addImage(@RequestParam("image") MultipartFile image) {
-
-        return new ResponseEntity<>(bookService.saveImage(image), HttpStatus.OK);
-    }*/
-
     @GetMapping("/download/{id}")
     public ResponseEntity<ByteArrayResource> download(@PathVariable("id") String id) throws IOException {
         Image imageLoad = imageService.download(id);
