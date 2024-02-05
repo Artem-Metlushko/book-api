@@ -42,55 +42,27 @@ public class BookServiceRest {
         return bookRepository.findById(id).orElseThrow();
     }
 
-
-    @Transactional
-    public Optional<String> saveImage(MultipartFile file) {
-        String id = addImage(file);
-        Book book = Book.builder()
-                .name("name")
-                .description("description")
-                .author("author")
-                .imageId(id).build();
-        bookRepository.save(book);
-
-        return Optional.of(id);
-
-    }
-
     @SneakyThrows
-    private String addImage(MultipartFile file) {
-        String id = null;
-        if (!file.isEmpty()) {
-            id = imageService.addImage(file);
-        }
-        return id;
-    }
-
     @Transactional
     public BookResponseDto addBook(BookRequestDto bookRequestDto, MultipartFile imageFile) {
 
-        String imageId = null;
-        if (imageFile != null) {
-            imageId = addImage(imageFile);
-        }
-
-
-        String finalImageId = imageId;
-        return Optional.of(bookRequestDto)
-                .map(book -> bookMapper.toBook(bookRequestDto, finalImageId))
-                .map(bookRepository::save)
-                .map(bookMapper::toBookResponseDto)
-                .orElseThrow();
+        String id = !imageFile.isEmpty() ? imageService.addImage(imageFile) : null;
+        return addBookInternal(bookRequestDto, id);
     }
+
     @Transactional
     public BookResponseDto addBook(BookRequestDto bookRequestDto) {
+        return addBookInternal(bookRequestDto, null);
+    }
 
+    private BookResponseDto addBookInternal(BookRequestDto bookRequestDto, String id) {
         return Optional.of(bookRequestDto)
-                .map(book -> bookMapper.toBook(bookRequestDto, null))
+                .map(book -> bookMapper.toBook(bookRequestDto, id))
                 .map(bookRepository::save)
                 .map(bookMapper::toBookResponseDto)
                 .orElseThrow();
     }
+
 
     @Transactional
     public Optional<BookResponseDto> updateBook(Long id, BookRequestDto bookRequestDto) {

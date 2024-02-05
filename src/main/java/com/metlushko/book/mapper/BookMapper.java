@@ -19,7 +19,7 @@ public class BookMapper {
 
 
     public BookResponseDto toBookResponseDto(Book book) {
-        return new BookResponseDto(book.getName(), book.getAuthor(), book.getDescription());
+        return new BookResponseDto(book.getName(), book.getAuthor(), book.getDescription(), book.getImageId());
     }
 
     public Book toCopyBook(Book book, BookRequestDto bookRequestDto) {

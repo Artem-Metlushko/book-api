@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,18 +47,17 @@ public class BookControllerRest {
         return bookService.getAllBooks();
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public BookResponseDto addBook(@Valid @RequestBody BookRequestDto bookResponseDto) {
          return bookService.addBook(bookResponseDto);
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> handleJsonAndMultipartInput(@RequestPart("data") BookRequestDto bookResponseDto,
-                                                              @RequestPart("file") MultipartFile file) {
-        bookService.addBook(bookResponseDto,file);
-        return ResponseEntity.ok()
-                .body(bookResponseDto.name() + bookResponseDto.description());
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public BookResponseDto handleJsonAndMultipartInput(@RequestPart("data") BookRequestDto bookResponseDto,
+                                                       @RequestPart("file") MultipartFile file) {
+        return bookService.addBook(bookResponseDto, file);
     }
 
     @PutMapping("{id}")
@@ -77,18 +75,18 @@ public class BookControllerRest {
         }
     }
 
-    @PostMapping("/add")
+/*    @PostMapping("/add")
     public ResponseEntity<?> addImage(@RequestParam("image") MultipartFile image) {
 
         return new ResponseEntity<>(bookService.saveImage(image), HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/download/{id}")
     public ResponseEntity<ByteArrayResource> download(@PathVariable("id") String id) throws IOException {
         Image imageLoad = imageService.download(id);
 
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(imageLoad.getFileType() ))
+                .contentType(MediaType.parseMediaType(imageLoad.getFileType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imageLoad.getName() + "\"")
                 .body(new ByteArrayResource(imageLoad.getFile()));
     }
