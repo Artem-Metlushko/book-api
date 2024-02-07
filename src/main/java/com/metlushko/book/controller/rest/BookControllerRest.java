@@ -3,12 +3,11 @@ package com.metlushko.book.controller.rest;
 import com.metlushko.book.dto.BookRequestDto;
 import com.metlushko.book.dto.BookResponseDto;
 import com.metlushko.book.entity.Book;
-import com.metlushko.book.entity.Image;
 import com.metlushko.book.service.ImageService;
 import com.metlushko.book.service.rest.BookServiceRest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,7 +49,7 @@ public class BookControllerRest {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public BookResponseDto addBook(@Valid @RequestBody BookRequestDto bookResponseDto) {
-         return bookService.addBook(bookResponseDto);
+        return bookService.addBook(bookResponseDto);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -75,14 +74,43 @@ public class BookControllerRest {
         }
     }
 
-    @GetMapping("/download/{id}")
-    public ResponseEntity<ByteArrayResource> download(@PathVariable("id") String id) throws IOException {
-        Image imageLoad = imageService.download(id);
+/*    @GetMapping("/download/{id}")
+    public ResponseEntity<File> download(@PathVariable("id") String id) throws IOException {
+        File file = imageService.download(id);
+        InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
+
 
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(imageLoad.getFileType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imageLoad.getName() + "\"")
-                .body(new ByteArrayResource(imageLoad.getFile()));
+                .contentType(MediaType.parseMediaType("video/mp4"))
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=video_%s.%s", 1, "mp4"))
+                .body(file);
+    }*/
+
+/*    @GetMapping("/download/{id}")
+    public ResponseEntity<File> download(@PathVariable("id") String id) throws IOException {
+        File file = imageService.download(id);
+        InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
+
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("video/mp4"))
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=video_%s.%s", 1, "mp4"))
+                .body(file);
+    }*/
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<InputStreamResource> download(@PathVariable("id") String id) throws IOException {
+        InputStreamResource inputStreamResource = imageService.download(id);
+
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("video/mp4"))
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment")
+
+                .body(inputStreamResource);
     }
 
 
