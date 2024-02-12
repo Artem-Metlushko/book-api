@@ -3,7 +3,6 @@ package com.metlushko.book.dao;
 import com.metlushko.book.entity.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class BookDaoCsv implements Dao {
 
