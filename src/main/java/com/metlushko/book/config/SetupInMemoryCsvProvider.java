@@ -23,10 +23,24 @@ public class SetupInMemoryCsvProvider {
     @PostConstruct
     private void setupData(){
 
-        hashMap.put(1L,new Book(1L,"1","a","b"));
-        hashMap.put(2L,new Book(2L,"2","c","d"));
-        hashMap.put(3L,new Book(3L,"3","f","c"));
-        hashMap.put(4L,new Book(4L,"4","q","w"));
+        hashMap.put(1L,Book.builder()
+                .id(1L)
+                .author("author1")
+                .name("name1")
+                .description("description1")
+                .build());
+        hashMap.put(2L,Book.builder()
+                .id(2L)
+                .author("author2")
+                .name("name2")
+                .description("description2")
+                .build());
+        hashMap.put(3L,Book.builder()
+                .id(3L)
+                .author("author3")
+                .name("name3")
+                .description("description3")
+                .build());
 
         dataCSV.writeBooks(hashMap);
 

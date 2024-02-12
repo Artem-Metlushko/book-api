@@ -4,7 +4,9 @@ public record BookResponseDto(String name,
 
                               String author,
 
-                              String description
+                              String description,
+
+                              String imageId
 
 ) {
 }
