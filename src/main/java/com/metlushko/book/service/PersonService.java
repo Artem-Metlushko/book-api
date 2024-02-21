@@ -1,42 +1,42 @@
 package com.metlushko.book.service;
 
-import com.metlushko.book.entity.Person;
+import com.metlushko.book.dto.PersonDtoRegistration;
+import com.metlushko.book.entity.User;
+import com.metlushko.book.mapper.PersonMapper;
 import com.metlushko.book.repository.PersonRepository;
-import com.metlushko.book.security.PersonDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PersonService implements UserDetailsService {
-    private final PersonRepository personRepository;
+public class PersonService {
 
+    private final PersonMapper personMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    private final PersonRepository personRepository;
 
-        Person person = personRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        return new PersonDetails(person);
-    }
+    public User savePerson(PersonDtoRegistration personDtoRegistration) {
+        User user = personMapper.toPerson(personDtoRegistration);
 
-    public Long savePerson(Person person){
-        String password = person.getPassword();
+        String password = user.getPassword();
         String encodePassword = bCryptPasswordEncoder.encode(password);
-        person.setPassword(encodePassword);
-        Person savePerson = personRepository.save(person);
-        return savePerson.getId();
+        user.setPassword(encodePassword);
+
+        return personRepository.save(user);
+
 
     }
 
+        public Long savePerson(User user){
+        String password = user.getPassword();
+        String encodePassword = bCryptPasswordEncoder.encode(password);
+        user.setPassword(encodePassword);
+        User saveUser = personRepository.save(user);
+        return saveUser.getId();
 
-
-
+    }
 
 }

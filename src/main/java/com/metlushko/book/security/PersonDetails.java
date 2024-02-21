@@ -1,29 +1,35 @@
 package com.metlushko.book.security;
 
-import com.metlushko.book.entity.Person;
+import com.metlushko.book.entity.User;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
+@Getter
+@Builder
 @RequiredArgsConstructor
 public class PersonDetails implements UserDetails {
-    private final Person person;
+    private final User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
     }
 
     @Override
     public String getPassword() {
-        return person.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return person.getUsername();
+        return user.getUsername();
     }
 
     @Override
