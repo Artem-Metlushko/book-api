@@ -28,7 +28,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
@@ -41,41 +41,5 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-
-/*    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((authorize) -> {
-                    authorize
-                            .anyRequest()
-                            .authenticated();
-                }).httpBasic(Customizer.withDefaults());
-        return http.build();
-    }*/
-
-
-/*    @Bean
-    UserDetailsManager users(DataSource dataSource) {
-        UserDetails user = User.builder()
-                .username("user")
-                .password(bCryptPasswordEncoder().encode("123"))
-                .roles("USER")
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(bCryptPasswordEncoder().encode("123"))
-                .roles("USER", "ADMIN")
-                .build();
-        JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-        users.createUser(user);
-        users.createUser(admin);
-        return users;
-    }*/
-
-
-
-
 
 }

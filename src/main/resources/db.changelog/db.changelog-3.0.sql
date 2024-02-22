@@ -28,19 +28,6 @@ CREATE TABLE user_roles
 
 INSERT INTO roles VALUES(1,'ROLE_ADMIN');
 
---changeset metlushkoaa:2
-
--- INSERT INTO "persons" (username, password, role)
--- VALUES ('name1', '123', 'admin');
---
--- INSERT INTO "persons" (username, password, role)
--- VALUES ('name2', '123', 'admin');
---
--- INSERT INTO "persons" (username, password, role)
--- VALUES ('name3', '123', 'user');
---
--- INSERT INTO "persons" (username, password, role)
--- VALUES ('name4', '123', 'user');
 
 
 
