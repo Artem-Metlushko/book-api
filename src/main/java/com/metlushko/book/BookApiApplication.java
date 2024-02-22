@@ -1,6 +1,5 @@
 package com.metlushko.book;
 
-import com.metlushko.book.repository.PersonRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -38,7 +37,6 @@ public class BookApiApplication {
         /*BookControllerRest bookControllerRest = context.getBean(BookControllerRest.class);
         Book bookById = bookControllerRest.getBookById(11L);
         System.out.println(bookById);*/
-        PersonRepository personRepository = context.getBean(PersonRepository.class);
 //        PersonService personService = context.getBean(PersonService.class);
 //        Long id = personService.savePerson(Person.builder().username("person").password("123").role("user").build());
 //        System.out.println(id);

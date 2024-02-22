@@ -3,11 +3,11 @@ package com.metlushko.book.dto;
 import lombok.Data;
 
 @Data
-public class PersonDtoRegistration {
+public class SignUpDto {
 
+    private String name;
     private String username;
-    private String password;
     private String email;
-    private String role;
+    private String password;
 
 }
