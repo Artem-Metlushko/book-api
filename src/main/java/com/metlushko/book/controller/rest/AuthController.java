@@ -1,5 +1,6 @@
 package com.metlushko.book.controller.rest;
 
+import com.metlushko.book.dto.JWTAuthResponse;
 import com.metlushko.book.dto.LoginDto;
 import com.metlushko.book.dto.SignUpDto;
 import com.metlushko.book.entity.Role;
@@ -7,6 +8,7 @@ import com.metlushko.book.entity.User;
 import com.metlushko.book.mapper.UserMapper;
 import com.metlushko.book.repository.RoleRepository;
 import com.metlushko.book.repository.UserRepository;
+import com.metlushko.book.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,8 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     private final UserMapper userMapper;
+
+    private final AuthService authService;
 
     @PostMapping("/signup")
     public ResponseEntity<String> registerUser(@RequestBody SignUpDto signUpDto) {
@@ -69,6 +73,16 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<JWTAuthResponse> authenticate(@RequestBody LoginDto loginDto){
+        String token = authService.login(loginDto);
+
+        JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+
+        return ResponseEntity.ok(jwtAuthResponse);
     }
 
 }

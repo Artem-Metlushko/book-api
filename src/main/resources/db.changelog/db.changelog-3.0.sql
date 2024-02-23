@@ -27,6 +27,15 @@ CREATE TABLE user_roles
 );
 
 INSERT INTO roles VALUES(1,'ROLE_ADMIN');
+INSERT INTO roles VALUES(2,'ROLE_USER');
+
+INSERT INTO users VALUES (1,'FreddyMercury','$2a$10$Pymgj4VFKscLpsuAbAMsTeOazimYz9cRTt1d3WLS4nyBIJmD5PnBO','Freddy@');
+INSERT INTO users VALUES (2,'TillLindeman','$2a$10$Pymgj4VFKscLpsuAbAMsTeOazimYz9cRTt1d3WLS4nyBIJmD5PnBO','Freddy@');
+
+INSERT INTO user_roles VALUES (1,1);
+INSERT INTO user_roles VALUES (2,2);
+
+
 
 
 
