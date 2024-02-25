@@ -42,7 +42,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody SignUpDto signUpDto) {
         Boolean existsByUsername = userRepository.existsByUsername(signUpDto.getUsername());
         if(Boolean.TRUE.equals(existsByUsername)){
@@ -58,7 +58,7 @@ public class AuthController {
         User user = userMapper.toUser(signUpDto);
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
-        Role roles = roleRepository.findByName("ROLE_ADMIN").orElseThrow();
+        Role roles = roleRepository.findByName("ROLE_USER").orElseThrow();
         user.setRoles(Collections.singleton(roles));
 
         userRepository.save(user);
@@ -66,7 +66,7 @@ public class AuthController {
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
@@ -75,7 +75,7 @@ public class AuthController {
         return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/loginJWT")
     public ResponseEntity<JWTAuthResponse> authenticate(@RequestBody LoginDto loginDto){
         String token = authService.login(loginDto);
 
