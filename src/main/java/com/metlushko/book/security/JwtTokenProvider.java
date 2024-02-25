@@ -27,6 +27,7 @@ public class JwtTokenProvider {
     private  long jwtExpirationDate;
 
     public String generateToken(Authentication authentication){
+
         String username = authentication.getName();
 
         Date currentDate = new Date();
@@ -40,12 +41,11 @@ public class JwtTokenProvider {
                 .signWith(key())
                 .compact();
 
+
     }
 
     private Key key(){
-        return Keys.hmacShaKeyFor(
-                Decoders.BASE64.decode(jwtSecret)
-        );
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
     public String getUsername(String token){

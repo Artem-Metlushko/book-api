@@ -1,23 +1,27 @@
 package com.metlushko.book.config;
 
+import com.metlushko.book.security.JwtAuthenticationEntryPoint;
+import com.metlushko.book.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import javax.sql.DataSource;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final DataSource dataSource;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+
+    private final JwtAuthenticationFilter authenticationFilter;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -40,9 +44,13 @@ public class SecurityConfig {
                          authorize
                                  .requestMatchers("/api/auth/**").permitAll()
                                  .requestMatchers("/admin").hasRole("ADMIN")
-                                 .anyRequest().authenticated());
+                                 .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults());;
 
+        http.exceptionHandling( exception -> exception
+                .authenticationEntryPoint(authenticationEntryPoint));
 
+        http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

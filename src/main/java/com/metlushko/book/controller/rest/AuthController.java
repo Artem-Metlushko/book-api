@@ -82,7 +82,7 @@ public class AuthController {
         JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
         jwtAuthResponse.setAccessToken(token);
 
-        return ResponseEntity.ok(jwtAuthResponse);
+        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
 
 }
