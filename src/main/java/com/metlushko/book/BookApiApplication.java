@@ -37,8 +37,9 @@ public class BookApiApplication {
         /*BookControllerRest bookControllerRest = context.getBean(BookControllerRest.class);
         Book bookById = bookControllerRest.getBookById(11L);
         System.out.println(bookById);*/
-
-
+//        PersonService personService = context.getBean(PersonService.class);
+//        Long id = personService.savePerson(Person.builder().username("person").password("123").role("user").build());
+//        System.out.println(id);
 
 
     }
